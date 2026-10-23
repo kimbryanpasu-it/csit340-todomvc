@@ -3,6 +3,7 @@ import { useState } from 'react'
 function Todos() {
   const [text, setText] = useState('')
   const [todos, setTodos] = useState([])
+  
   function handleSubmit(e) {
     e.preventDefault()
     const trimmed = text.trim()
@@ -13,6 +14,7 @@ function Todos() {
     setTodos([...todos, newTodo])
     setText('')
   }
+  
   function handleToggle(id) {
     setTodos(
       todos.map((todo) =>
@@ -43,6 +45,14 @@ function Todos() {
       }))
     )
   }
+
+  const [filter, setFilter] = useState('all') // 'all' | 'active' | 'completed'
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed
+    if (filter === 'completed') return todo.completed
+    return true
+  })
 
   return (
     <section className="mx-auto max-w-[550px]">
@@ -76,7 +86,7 @@ function Todos() {
           </label>
 
           <ul>
-            {todos.map((todo) => (
+            {filteredTodos.map((todo) => (
               <li
                 key={todo.id}
                 className="group relative flex items-center border-b border-[#ededed] text-2xl"
@@ -105,23 +115,6 @@ function Todos() {
               </button>
             </li>
             ))}
-            {/* <li className="group relative flex items-center border-b border-[#ededed] text-2xl">
-              <input
-                type="checkbox"
-                checked
-                readOnly
-                className="ml-[15px] size-[30px] shrink-0 cursor-pointer accent-[#59a193]"
-              />
-              <span className="flex-1 py-[15px] pr-[60px] pl-[15px] break-all text-[#949494] line-through">
-                Set up Tailwind
-              </span>
-              <button
-                type="button"
-                className="absolute right-[10px] hidden size-10 cursor-pointer text-[30px] text-[#949494] group-hover:block hover:text-[#c18585]"
-              >
-                ×
-              </button>
-            </li> */}
           </ul>
         </main>
         <footer className="grid h-10 grid-cols-3 items-center border-t border-[#e6e6e6] px-[15px] text-[15px]">
@@ -130,7 +123,45 @@ function Todos() {
             {incompleteCount === 1 ? 'item' : 'items'} left
           </span>
           <ul className="flex justify-center gap-1">
-            {/* ... your filter buttons ... */}
+            <li>
+              <button
+                type="button"
+                onClick={() => setFilter('all')}
+                className={
+                  filter === 'all'
+                    ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                    : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+                }
+              >
+                All
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => setFilter('active')}
+                className={
+                  filter === 'active'
+                    ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                    : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+                }
+              >
+                Active
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                onClick={() => setFilter('completed')}
+                className={
+                  filter === 'completed'
+                    ? 'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+                    : 'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
+                }
+              >
+                Completed
+              </button>
+            </li>
           </ul>
           {hasCompleted ? (
             <button
