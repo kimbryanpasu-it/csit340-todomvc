@@ -1,11 +1,8 @@
 import { useState } from 'react'
 
 function Todos() {
-    const [text, setText] = useState('')
-    const [todos, setTodos] = useState([
-    { id: 1, text: 'Learn the spread operator', completed: false },
-    { id: 2, text: 'Set up Tailwind', completed: true },
-  ])
+  const [text, setText] = useState('')
+  const [todos, setTodos] = useState([])
   function handleSubmit(e) {
     e.preventDefault()
     const trimmed = text.trim()
@@ -28,7 +25,6 @@ function Todos() {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
-
   return (
     <section className="mx-auto max-w-[550px]">
       <h1 className="text-center text-[80px] font-extralight text-[#b83f45]">
@@ -44,6 +40,8 @@ function Todos() {
             placeholder="What needs to be done?"
           />
         </form>
+        {todos.length > 0 && (
+          <>
 
         <main className="relative border-t border-[#e6e6e6]">
           <input id="toggle-all" type="checkbox" className="peer sr-only" />
@@ -137,6 +135,8 @@ function Todos() {
             Clear completed
           </button>
         </footer>
+        </>
+        )}
      </div>
     </section>
   )
